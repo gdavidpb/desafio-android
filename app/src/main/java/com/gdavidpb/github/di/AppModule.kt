@@ -16,7 +16,7 @@ import com.gdavidpb.github.domain.repository.VCSRepository
 import com.gdavidpb.github.domain.usecase.FetchRepositoriesUseCase
 import com.gdavidpb.github.domain.usecase.GetPullsUseCase
 import com.gdavidpb.github.presentation.model.RepositoryItem
-import com.gdavidpb.github.presentation.viewModels.MainViewModel
+import com.gdavidpb.github.presentation.viewModels.RepositoriesViewModel
 import com.gdavidpb.github.presentation.viewModels.PullsViewModel
 import com.gdavidpb.github.ui.adapters.PagedRepositoryAdapter
 import com.gdavidpb.github.ui.adapters.PullAdapter
@@ -110,7 +110,7 @@ val appModule = module {
 
     /* View models */
 
-    viewModel<MainViewModel>()
+    viewModel<RepositoriesViewModel>()
     viewModel<PullsViewModel>()
 
     /* Use cases */

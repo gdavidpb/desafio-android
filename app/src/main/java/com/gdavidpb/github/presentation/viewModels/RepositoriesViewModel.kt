@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import com.gdavidpb.github.presentation.model.RepositoryItem
 import com.gdavidpb.github.ui.pagging.RepositoryBoundaryCallback
 
-open class MainViewModel(
+open class RepositoriesViewModel(
     boundaryCallback: RepositoryBoundaryCallback,
     val pagedRepositories: LiveData<PagedList<RepositoryItem>>
 ) : ViewModel() {

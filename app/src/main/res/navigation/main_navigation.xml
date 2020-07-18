@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/nav_repositories">
+
+    <action
+        android:id="@+id/action_to_nav_browser"
+        app:destination="@id/nav_browser">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </action>
+
+    <fragment
+        android:id="@+id/nav_repositories"
+        android:name="com.gdavidpb.github.ui.fragments.RepositoriesFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_repositories">
+        <action
+            android:id="@+id/action_to_nav_pulls"
+            app:destination="@id/nav_pulls">
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="name"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_pulls"
+        android:name="com.gdavidpb.github.ui.fragments.PullsFragment"
+        android:label="{title} on GitHub"
+        tools:layout="@layout/fragment_pulls">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_browser"
+        android:name="com.gdavidpb.github.ui.fragments.BrowserFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_browser">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

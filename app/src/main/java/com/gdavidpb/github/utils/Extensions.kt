@@ -3,7 +3,7 @@ package com.gdavidpb.github.utils
 import android.net.ConnectivityManager
 import android.util.SparseArray
 import android.view.View
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -62,7 +62,7 @@ fun LiveCompletable.postCancel() = postValue(Completable.OnCancel)
 
 /* Observers */
 
-fun <T, L : LiveData<T>> FragmentActivity.observe(liveData: L, body: (T?) -> Unit) =
+fun <T, L : LiveData<T>> Fragment.observe(liveData: L, body: (T?) -> Unit) =
     liveData.observe(this, Observer(body))
 
 /* Coroutines */

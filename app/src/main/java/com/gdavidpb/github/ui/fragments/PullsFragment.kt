@@ -1,30 +1,36 @@
-package com.gdavidpb.github.ui.activities
+package com.gdavidpb.github.ui.fragments
 
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gdavidpb.github.MainNavigationDirections
 import com.gdavidpb.github.R
 import com.gdavidpb.github.domain.model.Pull
 import com.gdavidpb.github.domain.usecase.coroutines.Result
 import com.gdavidpb.github.presentation.model.PullItem
 import com.gdavidpb.github.presentation.viewModels.PullsViewModel
 import com.gdavidpb.github.ui.adapters.PullAdapter
-import com.gdavidpb.github.utils.*
+import com.gdavidpb.github.utils.CircleTransform
+import com.gdavidpb.github.utils.isNetworkAvailable
+import com.gdavidpb.github.utils.observe
+import com.gdavidpb.github.utils.toPullItem
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_pulls.*
+import kotlinx.android.synthetic.main.fragment_pulls.*
 import org.jetbrains.anko.imageResource
-import org.jetbrains.anko.longToast
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.longToast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class PullsActivity : AppCompatActivity() {
-
+class PullsFragment : Fragment() {
     private val viewModel: PullsViewModel by viewModel()
 
     private val picasso: Picasso by inject()
@@ -35,21 +41,17 @@ class PullsActivity : AppCompatActivity() {
         parametersOf(PullManager())
     }
 
-    private val extraTitle by lazy {
-        intent.getStringExtra(EXTRA_TITLE)
+    private val args by navArgs<PullsFragmentArgs>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(R.layout.fragment_pulls, container, false)
     }
 
-    private val extraName by lazy {
-        intent.getStringExtra(EXTRA_NAME)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pulls)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.label_git_hub, extraTitle)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         sRefreshPull.isEnabled = false
 
         with(rViewPull) {
@@ -62,14 +64,8 @@ class PullsActivity : AppCompatActivity() {
         with(viewModel) {
             observe(pulls, ::pullsObserver)
 
-            getPulls(repository = extraName)
+            getPulls(repository = args.name)
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-
-        return true
     }
 
     private fun pullsObserver(result: Result<List<Pull>>?) {
@@ -110,17 +106,21 @@ class PullsActivity : AppCompatActivity() {
 
     inner class PullManager : PullAdapter.AdapterCallback {
         override fun onPullClicked(item: PullItem) {
-            startActivity<BrowserActivity>(
-                EXTRA_TITLE to item.title,
-                EXTRA_URL to item.url
+            val action = MainNavigationDirections.actionToNavBrowser(
+                title = item.title,
+                url = item.url
             )
+
+            findNavController().navigate(action)
         }
 
         override fun onUserClicked(item: PullItem) {
-            startActivity<BrowserActivity>(
-                EXTRA_TITLE to item.userLogin,
-                EXTRA_URL to item.userUrl
+            val action = MainNavigationDirections.actionToNavBrowser(
+                title = item.userLogin,
+                url = item.userUrl
             )
+
+            findNavController().navigate(action)
         }
 
         override fun loadImage(url: String, imageView: ImageView) {
