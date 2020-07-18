@@ -7,17 +7,19 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.koin.standalone.StandAloneContext
-import org.koin.standalone.inject
-import org.koin.test.KoinTest
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
-class GitHubApiTest : KoinTest {
+class GitHubApiTest : AutoCloseKoinTest() {
 
     private val api: GitHubApi by inject()
 
     @Before
     fun `start koin`() {
-        StandAloneContext.startKoin(listOf(testModule))
+        startKoin {
+            modules(testModule)
+        }
     }
 
     @Test
@@ -57,6 +59,6 @@ class GitHubApiTest : KoinTest {
 
     @After
     fun `stop koin`() {
-        StandAloneContext.stopKoin()
+        //StandAloneContext.stopKoin()
     }
 }

@@ -4,9 +4,8 @@ import com.gdavidpb.github.data.model.api.UserEntry
 import com.gdavidpb.github.data.model.database.EmbeddedUser
 import com.gdavidpb.github.data.source.remote.GitHubApi
 import com.gdavidpb.github.domain.model.User
-import com.gdavidpb.github.utils.URL_BASE_GITHUB_API
 import okhttp3.OkHttpClient
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -25,7 +24,7 @@ val testModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(URL_BASE_GITHUB_API)
+            .baseUrl(BuildConfig.API_BASE)
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

@@ -15,19 +15,20 @@ import com.gdavidpb.github.presentation.model.PullItem
 import com.gdavidpb.github.presentation.model.RepositoryItem
 import com.gdavidpb.github.utils.*
 import junit.framework.TestCase.assertEquals
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.standalone.StandAloneContext
-import org.koin.standalone.inject
-import org.koin.test.KoinTest
+import org.koin.core.context.startKoin
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import java.util.*
 
-class MappersTest : KoinTest {
+class MappersTest : AutoCloseKoinTest() {
 
     @Before
     fun `start koin`() {
-        StandAloneContext.startKoin(listOf(testModule))
+        startKoin {
+            modules(testModule)
+        }
     }
 
     /* api to domain models mappers */
@@ -359,10 +360,5 @@ class MappersTest : KoinTest {
         val mappedPull = domainPull.toPullItem()
 
         assertEquals(presentationPull, mappedPull)
-    }
-
-    @After
-    fun `stop koin`() {
-        StandAloneContext.stopKoin()
     }
 }

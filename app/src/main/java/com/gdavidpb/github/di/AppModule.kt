@@ -6,6 +6,7 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.room.Room
+import com.gdavidpb.github.BuildConfig
 import com.gdavidpb.github.data.source.GitHubDataRepository
 import com.gdavidpb.github.data.source.GitHubDataStoreFactory
 import com.gdavidpb.github.data.source.local.GitHubCacheDataStore
@@ -16,12 +17,14 @@ import com.gdavidpb.github.domain.repository.VCSRepository
 import com.gdavidpb.github.domain.usecase.FetchRepositoriesUseCase
 import com.gdavidpb.github.domain.usecase.GetPullsUseCase
 import com.gdavidpb.github.presentation.model.RepositoryItem
-import com.gdavidpb.github.presentation.viewModels.RepositoriesViewModel
 import com.gdavidpb.github.presentation.viewModels.PullsViewModel
+import com.gdavidpb.github.presentation.viewModels.RepositoriesViewModel
 import com.gdavidpb.github.ui.adapters.PagedRepositoryAdapter
 import com.gdavidpb.github.ui.adapters.PullAdapter
 import com.gdavidpb.github.ui.pagging.RepositoryBoundaryCallback
-import com.gdavidpb.github.utils.*
+import com.gdavidpb.github.utils.DATABASE_NAME
+import com.gdavidpb.github.utils.LiveCompletable
+import com.gdavidpb.github.utils.toRepositoryItem
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -55,7 +58,7 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(URL_BASE_GITHUB_API)
+            .baseUrl(BuildConfig.API_BASE)
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -87,7 +90,7 @@ val appModule = module {
 
     single {
         PagedList.Config.Builder()
-            .setPageSize(SIZE_PAGE)
+            .setPageSize(BuildConfig.API_PAGE_SIZE)
             .build()
     }
 
