@@ -4,6 +4,7 @@ import com.gdavidpb.github.data.model.api.UserEntry
 import com.gdavidpb.github.data.model.database.EmbeddedUser
 import com.gdavidpb.github.data.source.remote.GitHubApi
 import com.gdavidpb.github.domain.model.User
+import com.gdavidpb.github.utils.create
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -32,7 +33,7 @@ val testModule = module {
 
     single {
         get<Retrofit>()
-            .create(GitHubApi::class.java) as GitHubApi
+            .create<GitHubApi>()
     }
 
     /* User for testing */

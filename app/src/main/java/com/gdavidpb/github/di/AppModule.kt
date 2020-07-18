@@ -24,6 +24,7 @@ import com.gdavidpb.github.ui.adapters.PullAdapter
 import com.gdavidpb.github.ui.pagging.RepositoryBoundaryCallback
 import com.gdavidpb.github.utils.DATABASE_NAME
 import com.gdavidpb.github.utils.LiveCompletable
+import com.gdavidpb.github.utils.create
 import com.gdavidpb.github.utils.toRepositoryItem
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
@@ -66,7 +67,7 @@ val appModule = module {
 
     single {
         get<Retrofit>()
-            .create(GitHubApi::class.java) as GitHubApi
+            .create<GitHubApi>()
     }
 
     /* Database */

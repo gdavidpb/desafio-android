@@ -1,7 +1,7 @@
 package com.gdavidpb.github
 
 import com.gdavidpb.github.data.source.remote.GitHubApi
-import com.gdavidpb.github.utils.await
+import com.gdavidpb.github.utils.getOrThrow
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -25,10 +25,10 @@ class GitHubApiTest : AutoCloseKoinTest() {
     @Test
     fun `should get repositories from GitHub api`() {
         val repositories = runBlocking {
-            api.getRepositories(page = 1).await()
+            api.getRepositories(page = 1).getOrThrow()
         }
 
-        Assert.assertNotNull(repositories); requireNotNull(repositories)
+        Assert.assertNotNull(repositories)
 
         Assert.assertTrue(repositories.total_count > 0)
     }
@@ -36,22 +36,20 @@ class GitHubApiTest : AutoCloseKoinTest() {
     @Test
     fun `should get pull requests from first repository`() {
         val repositories = runBlocking {
-            api.getRepositories(page = 1).await()
+            api.getRepositories(page = 1).getOrThrow()
         }
 
-        Assert.assertNotNull(repositories); requireNotNull(repositories)
+        Assert.assertNotNull(repositories)
 
         Assert.assertTrue(repositories.total_count > 0)
 
-        val firstRepository = repositories.items.firstOrNull()
-
-        Assert.assertNotNull(firstRepository); requireNotNull(firstRepository)
+        val firstRepository = repositories.items.first()
 
         val pulls = runBlocking {
-            api.getPulls(repositoryName = firstRepository.full_name).await()
+            api.getPulls(repositoryName = firstRepository.full_name).getOrThrow()
         }
 
-        Assert.assertNotNull(pulls); requireNotNull(pulls)
+        Assert.assertNotNull(pulls)
 
         /* A repository could has not pull requests */
         Assert.assertTrue(pulls.size >= 0)

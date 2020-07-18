@@ -11,16 +11,12 @@ import com.gdavidpb.github.domain.usecase.coroutines.Completable
 import com.gdavidpb.github.domain.usecase.coroutines.Result
 import com.google.gson.internal.bind.util.ISO8601Utils
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import retrofit2.Retrofit
 import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 /* Context */
 
@@ -67,20 +63,9 @@ fun <T, L : LiveData<T>> Fragment.observe(liveData: L, body: (T?) -> Unit) =
 
 /* Coroutines */
 
-suspend fun <T> Call<T>.await() = suspendCoroutine<T?> { continuation ->
-    enqueue(object : Callback<T?> {
-        override fun onResponse(call: Call<T?>, response: Response<T?>) {
-            if (response.isSuccessful)
-                continuation.resume(response.body())
-            else
-                continuation.resumeWithException(HttpException(response))
-        }
+inline fun <reified T> Retrofit.create(): T = create(T::class.java) as T
 
-        override fun onFailure(call: Call<T?>, t: Throwable) {
-            continuation.resumeWithException(t)
-        }
-    })
-}
+fun <T> Response<T>.getOrThrow(): T = body() ?: throw HttpException(this)
 
 /* View */
 
