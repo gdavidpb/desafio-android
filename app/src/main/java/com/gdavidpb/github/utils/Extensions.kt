@@ -108,8 +108,8 @@ private val cacheFormat = SparseArray<SimpleDateFormat>()
 
 fun Int.readableFormat() = when {
     this < 1000 -> "$this"
-    this < 1000000 -> String.format("%dk", this / 1000)
-    else -> String.format("%.2fM", this / 1000000f)
+    this < 1000000 -> "%dk".format(this / 1000)
+    else -> "%.2fM".format(this / 1000000f)
 }
 
 fun String.parseISO8601(): Date = ISO8601Utils.parse(this, ParsePosition(0))
