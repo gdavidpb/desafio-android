@@ -89,7 +89,7 @@ class RepositoriesFragment : Fragment() {
         }
     }
 
-    inner class RepositoryManager : PagedRepositoryAdapter.AdapterCallback {
+    inner class RepositoryManager : PagedRepositoryAdapter.AdapterManager {
         override fun onRepositoryClicked(item: RepositoryItem) {
             val action = RepositoriesFragmentDirections.actionToNavPulls(
                 title = item.name,

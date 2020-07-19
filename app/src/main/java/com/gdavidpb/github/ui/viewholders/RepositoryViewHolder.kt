@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.item_repository.view.*
 
 open class RepositoryViewHolder(
     itemView: View,
-    private val callback: PagedRepositoryAdapter.AdapterCallback
+    private val manager: PagedRepositoryAdapter.AdapterManager
 ) : BaseViewHolder<RepositoryItem>(itemView) {
     override fun bindView(item: RepositoryItem) {
         with(itemView) {
@@ -19,11 +19,11 @@ open class RepositoryViewHolder(
             tViewRepositoryStarCount.text = item.stargazersCount
             tViewRepositoryIssueCount.text = item.openIssuesCount
 
-            callback.loadImage(item.userAvatarUrl, iViewRepositoryUserAvatar)
+            manager.loadImage(item.userAvatarUrl, iViewRepositoryUserAvatar)
 
-            onClickOnce { callback.onRepositoryClicked(item) }
+            onClickOnce { manager.onRepositoryClicked(item) }
 
-            iViewRepositoryUserAvatar.onClickOnce { callback.onUserClicked(item) }
+            iViewRepositoryUserAvatar.onClickOnce { manager.onUserClicked(item) }
         }
     }
 }

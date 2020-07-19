@@ -15,6 +15,8 @@ import com.gdavidpb.github.presentation.model.PullItem
 import com.gdavidpb.github.presentation.model.RepositoryItem
 import java.util.*
 
+private const val FORMAT_DATE = "d MMM yyyy"
+
 /* From api to domain model */
 
 fun UserEntry.toUser() = User(
@@ -81,6 +83,28 @@ fun PullEntity.toPull() = Pull(
     mergedAt = Date(mergedAt)
 )
 
+fun RepositoryEntity.toRepository() = Repository(
+    id = id,
+    name = name,
+    fullName = fullName,
+    url = url,
+    description = description,
+    owner = owner.toUser(),
+    stargazersCount = stargazersCount,
+    watchersCount = watchersCount,
+    openIssuesCount = openIssuesCount,
+    forksCount = forksCount,
+    createdAt = Date(createdAt),
+    updatedAt = Date(updatedAt),
+    page = 1
+)
+
+fun List<Repository>.toRepositorySearchResult() = SearchResult(
+    totalCount = size.toLong(),
+    incompleteResults = false,
+    items = this
+)
+
 /* From domain to database model */
 
 fun User.toEmbeddedUser() = EmbeddedUser(
@@ -135,8 +159,8 @@ fun RepositoryEntity.toRepositoryItem() = RepositoryItem(
     watchersCount = watchersCount.readableFormat(),
     openIssuesCount = openIssuesCount.readableFormat(),
     forksCount = forksCount.readableFormat(),
-    createdAt = Date(createdAt).format("d MMM yyyy"),
-    updatedAt = Date(updatedAt).format("d MMM yyyy"),
+    createdAt = Date(createdAt).format(FORMAT_DATE),
+    updatedAt = Date(updatedAt).format(FORMAT_DATE),
     page = page
 )
 
@@ -151,8 +175,8 @@ fun Pull.toPullItem() = PullItem(
     userLogin = user.login,
     userUrl = user.url,
     userAvatarUrl = user.avatarUrl,
-    createdAt = createdAt.format("d MMM yyyy"),
-    updatedAt = updatedAt.format("d MMM yyyy"),
-    closedAt = closedAt.format("d MMM yyyy"),
-    mergedAt = mergedAt.format("d MMM yyyy")
+    createdAt = createdAt.format(FORMAT_DATE),
+    updatedAt = updatedAt.format(FORMAT_DATE),
+    closedAt = closedAt.format(FORMAT_DATE),
+    mergedAt = mergedAt.format(FORMAT_DATE)
 )

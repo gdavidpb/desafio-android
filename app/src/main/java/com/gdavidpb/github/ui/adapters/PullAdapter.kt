@@ -9,10 +9,10 @@ import com.gdavidpb.github.ui.viewholders.BaseViewHolder
 import com.gdavidpb.github.ui.viewholders.PullViewHolder
 
 open class PullAdapter(
-    private val callback: AdapterCallback
+    private val manager: AdapterManager
 ) : BaseAdapter<PullItem>() {
 
-    interface AdapterCallback {
+    interface AdapterManager {
         fun onPullClicked(item: PullItem)
         fun onUserClicked(item: PullItem)
 
@@ -24,6 +24,6 @@ open class PullAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<PullItem> {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_pull, parent, false)
 
-        return PullViewHolder(itemView, callback)
+        return PullViewHolder(itemView, manager)
     }
 }

@@ -104,7 +104,7 @@ class PullsFragment : Fragment() {
         }
     }
 
-    inner class PullManager : PullAdapter.AdapterCallback {
+    inner class PullManager : PullAdapter.AdapterManager {
         override fun onPullClicked(item: PullItem) {
             val action = MainNavigationDirections.actionToNavBrowser(
                 title = item.title,

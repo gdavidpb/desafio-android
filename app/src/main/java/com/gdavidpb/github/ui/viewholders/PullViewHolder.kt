@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_pull.view.*
 
 open class PullViewHolder(
     itemView: View,
-    private val callback: PullAdapter.AdapterCallback
+    private val manager: PullAdapter.AdapterManager
 ) : BaseViewHolder<PullItem>(itemView) {
     override fun bindView(item: PullItem) {
         with(itemView) {
@@ -19,11 +19,11 @@ open class PullViewHolder(
 
             tViewPullInfo.text = context.getString(R.string.label_info_pulls, item.number, item.message)
 
-            callback.loadImage(item.userAvatarUrl, iViewPullUserAvatar)
+            manager.loadImage(item.userAvatarUrl, iViewPullUserAvatar)
 
-            onClickOnce { callback.onPullClicked(item) }
+            onClickOnce { manager.onPullClicked(item) }
 
-            iViewPullUserAvatar.onClickOnce { callback.onUserClicked(item) }
+            iViewPullUserAvatar.onClickOnce { manager.onUserClicked(item) }
         }
     }
 }

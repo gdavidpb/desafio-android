@@ -2,9 +2,6 @@ package com.gdavidpb.github.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import androidx.paging.DataSource
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import androidx.room.Room
 import com.gdavidpb.github.BuildConfig
 import com.gdavidpb.github.data.source.GitHubDataRepository
@@ -16,16 +13,12 @@ import com.gdavidpb.github.data.source.remote.GitHubRemoteDataStore
 import com.gdavidpb.github.domain.repository.VCSRepository
 import com.gdavidpb.github.domain.usecase.FetchRepositoriesUseCase
 import com.gdavidpb.github.domain.usecase.GetPullsUseCase
-import com.gdavidpb.github.presentation.model.RepositoryItem
 import com.gdavidpb.github.presentation.viewModels.PullsViewModel
 import com.gdavidpb.github.presentation.viewModels.RepositoriesViewModel
 import com.gdavidpb.github.ui.adapters.PagedRepositoryAdapter
 import com.gdavidpb.github.ui.adapters.PullAdapter
-import com.gdavidpb.github.ui.pagging.RepositoryBoundaryCallback
 import com.gdavidpb.github.utils.DATABASE_NAME
-import com.gdavidpb.github.utils.LiveCompletable
 import com.gdavidpb.github.utils.create
-import com.gdavidpb.github.utils.toRepositoryItem
 import com.squareup.picasso.Picasso
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -33,7 +26,6 @@ import org.koin.androidx.experimental.dsl.viewModel
 import org.koin.dsl.module
 import org.koin.experimental.builder.factory
 import org.koin.experimental.builder.factoryBy
-import org.koin.experimental.builder.single
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -80,32 +72,6 @@ val appModule = module {
         ).build()
     }
 
-    /* Paging */
-
-    single {
-        get<GitHubDatabase>()
-            .repositories
-            .browse()
-            .map { it.toRepositoryItem() }
-    }
-
-    single {
-        PagedList.Config.Builder()
-            .setPageSize(BuildConfig.API_PAGE_SIZE)
-            .build()
-    }
-
-    single {
-        LivePagedListBuilder(get<DataSource.Factory<Int, RepositoryItem>>(), get<PagedList.Config>())
-            .setBoundaryCallback(get<RepositoryBoundaryCallback>())
-            .setInitialLoadKey(1)
-            .build()
-    }
-
-    single<RepositoryBoundaryCallback>()
-
-    factory<LiveCompletable>()
-
     /* Picasso */
 
     single {
@@ -137,11 +103,11 @@ val appModule = module {
 
     /* Adapters */
 
-    factory { (callback: PagedRepositoryAdapter.AdapterCallback) ->
-        PagedRepositoryAdapter(callback)
+    factory { (manager: PagedRepositoryAdapter.AdapterManager) ->
+        PagedRepositoryAdapter(manager)
     }
 
-    factory { (callback: PullAdapter.AdapterCallback) ->
-        PullAdapter(callback)
+    factory { (manager: PullAdapter.AdapterManager) ->
+        PullAdapter(manager)
     }
 }
