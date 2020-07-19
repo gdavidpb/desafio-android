@@ -19,11 +19,10 @@ import com.gdavidpb.github.presentation.viewModels.RepositoriesViewModel
 import com.gdavidpb.github.ui.adapters.PagedRepositoryAdapter
 import com.gdavidpb.github.utils.CircleTransform
 import com.gdavidpb.github.utils.isNetworkAvailable
+import com.gdavidpb.github.utils.longToast
 import com.gdavidpb.github.utils.observe
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_repositories.*
-import org.jetbrains.anko.imageResource
-import org.jetbrains.anko.support.v4.longToast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -115,7 +114,7 @@ class RepositoriesFragment : Fragment() {
                     .transform(CircleTransform())
                     .into(imageView)
             else
-                imageView.imageResource = R.mipmap.ic_launcher
+                imageView.setImageResource(R.mipmap.ic_launcher)
         }
     }
 }

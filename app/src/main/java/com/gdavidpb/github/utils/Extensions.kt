@@ -3,8 +3,10 @@ package com.gdavidpb.github.utils
 import android.net.ConnectivityManager
 import android.util.SparseArray
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -115,6 +117,9 @@ fun Date.format(format: String): String {
 }
 
 /* Fragment */
+
+fun Fragment.longToast(@StringRes resId: Int) =
+    Toast.makeText(requireContext(), resId, Toast.LENGTH_LONG).show()
 
 fun Fragment.requireActionBar() =
     (requireActivity() as AppCompatActivity).supportActionBar
