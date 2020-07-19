@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.gdavidpb.github.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +35,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        setSupportActionBar(toolbar)
+
+        NavigationUI.setupWithNavController(toolbar, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
     }
 }

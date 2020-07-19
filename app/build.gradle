@@ -21,6 +21,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "API_BASE", "\"https://api.github.com/\""
+            buildConfigField "String", "API_HOST", "\"github.com\""
             buildConfigField "int", "API_PAGE_SIZE", "30"
         }
         release {
@@ -28,6 +29,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
 
             buildConfigField "String", "API_BASE", "\"https://api.github.com/\""
+            buildConfigField "String", "API_HOST", "\"github.com\""
             buildConfigField "int", "API_PAGE_SIZE", "30"
         }
     }

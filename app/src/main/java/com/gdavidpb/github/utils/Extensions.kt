@@ -3,6 +3,9 @@ package com.gdavidpb.github.utils
 import android.net.ConnectivityManager
 import android.util.SparseArray
 import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -110,3 +113,23 @@ fun Date.format(format: String): String {
         cacheFormat.put(key, it)
     }).format(this)
 }
+
+/* Fragment */
+
+fun Fragment.requireActionBar() =
+    (requireActivity() as AppCompatActivity).supportActionBar
+        ?: error("Fragment $this not attached to an activity.")
+
+fun Fragment.backCallback(callback: OnBackPressedCallback.() -> Unit) =
+    object : Lazy<OnBackPressedCallback> {
+        override val value: OnBackPressedCallback
+            get() = requireActivity().onBackPressedDispatcher.addCallback(
+                owner = this@backCallback,
+                enabled = false,
+                onBackPressed = callback
+            )
+
+        override fun isInitialized() = true
+    }
+
+fun Fragment.onBackPressed() = requireActivity().onBackPressedDispatcher.onBackPressed()

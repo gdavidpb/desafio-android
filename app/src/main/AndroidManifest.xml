@@ -28,16 +28,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".ui.activities.PullsActivity"
-                android:exported="false"
-                android:label=""/>
-
-        <activity
-                android:name=".ui.activities.BrowserActivity"
-                android:exported="false"
-                android:label=""/>
-
     </application>
 
 </manifest>
